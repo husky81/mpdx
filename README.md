@@ -1,10 +1,3 @@
-아래는 **표준 포맷/모델 프로젝트 톤**에 맞게 정리하고,
-중복·구조 깨짐·논문 초안 느낌을 제거한 **개선된 README.md 버전**입니다.
-(의미는 유지하면서 *“표준 후보 + 오픈 프로젝트”* 인상을 강화했습니다.)
-
----
-
-````markdown
 # MPDX — Multi-Parent Document Exchange
 
 MPDX is a **semantic, graph-based document data model** for representing textual and tabular documents independently of visual layout.
