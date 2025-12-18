@@ -185,19 +185,3 @@ For questions, discussion, or collaboration:
 **MPDX is not a document format.**
 **It is a semantic document model.**
 
-```
-
----
-
-### 다음 단계로 추천하는 개선 (선택)
-- `spec/` 디렉토리에 **MPDX v0.1 Spec** 문서 분리
-- README 상단에 **“Open standard candidate”** 문구 추가
-- LICENSE를 Apache-2.0으로 변경 고려 (표준 확산 목적이라면)
-
-원하면 다음도 바로 도와줄 수 있어요:
-- 📘 **MPDX 공식 스펙 문서 템플릿**
-- 🧠 논문 abstract (표준 제안용 톤)
-- 🗺️ v1.0까지의 로드맵
-
-어디까지 같이 다듬을까요?
-```
