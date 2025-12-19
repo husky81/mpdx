@@ -3,7 +3,7 @@
 **MPDX — Multi-Parent Document Exchange**  
 Version: v0.1  
 Status: Draft / Experimental  
-Last updated: 2025-XX-XX
+Last updated: 2025-12-19
 
 ---
 
@@ -81,6 +81,7 @@ Implementations MAY support additional types, but MUST support the following cor
 Represents the root of a document or a logical table.
 
 Properties:
+
 - SHOULD have no parents (except in nested documents)
 - Serves as the primary semantic container
 
@@ -91,6 +92,7 @@ Properties:
 Represents a title associated with a table or document.
 
 Properties:
+
 - MUST have exactly one parent of type `table`
 - Contains human-readable text
 
@@ -106,6 +108,7 @@ Represents semantic labels such as:
 - Descriptive items
 
 Properties:
+
 - MAY have one or more parents
 - Text content SHOULD be human-readable
 - Semantics are defined by parent relationships
@@ -117,6 +120,7 @@ Properties:
 Represents a concrete value resulting from a **semantic intersection**.
 
 Properties:
+
 - MUST have two or more parents
 - Represents the combination of all parent semantics
 - Content MAY be numeric, textual, or structured
