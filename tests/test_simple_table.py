@@ -3,7 +3,7 @@ import mpdx
 from pathlib import Path
 
 
-def test_simple_table_load():
+def test_simple_table_load2():
     path = Path("examples/3x3_table.html")
 
     mp = mpdx.load(path)
