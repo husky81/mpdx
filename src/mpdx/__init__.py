@@ -1,14 +1,14 @@
 # mpdx/__init__.py
 
 from .__version__ import __version__
-
-from .parser import parse_mpdx as load
+from .parser import parse_mpdx
 from .mpis import MPIS
 from .kan import Kan, KanType
 
+from .document import load
+
 
 from .document import MpdxDocument
-from .io.html import load_html_table
 
 def from_html(path_or_html: str) -> MpdxDocument:
     """

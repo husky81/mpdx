@@ -1,4 +1,7 @@
 from dataclasses import dataclass
+from pathlib import Path
+from typing import Union
+from .node import MpdxNode
 
 
 @dataclass
@@ -14,3 +17,20 @@ class MpdxDocument:
 
     def find(self, *, type=None, text=None):
         """Query nodes by simple conditions."""
+
+
+def load(source: Union[str, Path]):
+    path = Path(source)
+
+    if path.suffix.lower() in {".html", ".htm"}:
+        from .io.html import from_html
+        return from_html(path)
+
+    elif path.suffix.lower() in {".docx"}:
+        return from_docx(path)
+
+    elif path.suffix.lower() in {".md"}:
+        return from_markdown(path)
+
+    else:
+        raise ValueError(f"Unsupported file type: {path.suffix}")

@@ -1,3 +1,8 @@
+
+
+from dataclasses import dataclass, field
+
+
 @dataclass
 class MpdxNode:
     id: str
@@ -5,4 +10,3 @@ class MpdxNode:
     parents: list[str]
     text: str | None = None
     meta: dict = field(default_factory=dict)
-

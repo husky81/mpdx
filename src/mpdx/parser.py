@@ -1,7 +1,9 @@
 from pathlib import Path
 import re
+from typing import Union
 from .kan import Kan, KanType
 from .mpis import MPIS
+
 
 
 def parse_mpdx(path: str | Path) -> MPIS:
