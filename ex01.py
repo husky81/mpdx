@@ -1,4 +1,5 @@
-from mpdx.mpdx_to_html import main
+import mpdx
 
-main(r"samples\plan_3x3.mpdx")  # a.html 자동 생성
-
+mp = mpdx.load("examples/3x3_table.html")
+html_out = mp.to_html()
+print(html_out)

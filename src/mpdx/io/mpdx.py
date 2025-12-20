@@ -11,9 +11,6 @@ from mpdx.node import MpdxNode
 HEADER = ["id", "parents", "type", "text", "meta"]
 
 
-def print_mpdx(self):
-    pass
-
 def save_mpdx(doc: MpdxDocument, path: Union[str, Path]) -> None:
     """
     Save an MpdxDocument to a .mpdx file (TSV-based).

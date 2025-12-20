@@ -9,6 +9,8 @@ def test_simple_table_load2():
 
     assert mp is not None
 
+    print(mp)
+
 
 def test_save_mpdx(tmp_path):
     mp = mpdx.load("examples/3x3_table.html")

@@ -12,3 +12,4 @@ class MpdxNode:
 
     #non-semantic, non-canonical, auxiliary data
     meta: dict = field(default_factory=dict)
+
