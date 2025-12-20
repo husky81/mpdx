@@ -3,13 +3,8 @@
 
 from pathlib import Path
 from typing import IO, Union
+from ..layout import parser_html
 
-
-def from_html(path_or_html: str):
-    html = read_html(path_or_html)
-    ctl = parse_html_to_ctl(html)
-    mpdx = ctl_to_mpdx(ctl)
-    return mpdx
 
 
 def read_html(source: Union[str, Path, IO[str]]) -> str:

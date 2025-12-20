@@ -94,3 +94,14 @@ class HtmlTableParser:
             cells=cells,
             owner=owner,
         )
+
+def parse_html_to_ctl(html: str) -> CanonicalTableLayout:
+    """
+    Parse HTML string containing a <table> element
+    into a CanonicalTableLayout (CTL).
+
+    This function assumes that the HTML has already been loaded
+    and normalized (e.g. via read_html).
+    """
+    parser = HtmlTableParser()
+    return parser.parse(html)
