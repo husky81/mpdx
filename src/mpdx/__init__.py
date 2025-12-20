@@ -10,6 +10,11 @@ from mpdx.io.html import read_html
 from mpdx.layout.parser_html import parse_html_to_ctl
 from mpdx.convert.ctl_to_mpdx import ctl_to_mpdx
 
+def new() -> MpdxDocument:
+    """
+    Create an empty MPDX document.
+    """
+    return MpdxDocument()
 
 def from_html(source: Union[str, Path]) -> MpdxDocument:
     """

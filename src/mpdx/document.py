@@ -21,31 +21,6 @@ class MpdxDocument:
     def root(self) -> Optional[MpdxNode]:
         return self.nodes.get(self.root_id) if self.root_id else None
 
-    def find(self, *, type=None, text=None):
-        for node in self.nodes.values():
-            if type is not None and node.type != type:
-                continue
-            if text is not None and node.text != text:
-                continue
-            yield node
-
-    # ---------- rendering ----------
-    def to_html(self) -> str:
-        """Render document back to HTML table (v0: layout-preserving)."""
-        # local import to avoid circular imports
-        from mpdx.convert.mpdx_to_ctl import mpdx_to_ctl
-        from mpdx.render.html import ctl_to_html
-
-        ctl = mpdx_to_ctl(self)
-        return ctl_to_html(ctl)
-
-
-    # ---------- serialization ----------
-    def save(self, path):
-        # local import to avoid circular imports
-        from mpdx.io.mpdx import save_mpdx
-        save_mpdx(self, path)
-
     # ---------- human-friendly print ----------
     def __str__(self) -> str:
         """
@@ -77,3 +52,34 @@ class MpdxDocument:
             )
 
         return "\n".join(lines)
+
+    def find(self, *, type=None, text=None):
+        for node in self.nodes.values():
+            if type is not None and node.type != type:
+                continue
+            if text is not None and node.text != text:
+                continue
+            yield node
+
+
+    # ---------- serialization ----------
+    def save(self, path):
+        # local import to avoid circular imports
+        from mpdx.io.mpdx import save_mpdx
+        save_mpdx(self, path)
+
+    def save_html(self, path):
+        from mpdx.io.html import save_html
+        save_html(self, path)
+
+    # ---------- rendering ----------
+    def to_html(self) -> str:
+        """Render document back to HTML table (v0: layout-preserving)."""
+        # local import to avoid circular imports
+        from mpdx.convert.mpdx_to_ctl import mpdx_to_ctl
+        from mpdx.render.html import ctl_to_html
+
+        ctl = mpdx_to_ctl(self)
+        return ctl_to_html(ctl)
+
+
