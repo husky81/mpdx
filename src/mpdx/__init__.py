@@ -9,6 +9,8 @@ from .document import MpdxDocument
 from mpdx.io.html import read_html
 from mpdx.layout.parser_html import parse_html_to_ctl
 from mpdx.convert.ctl_to_mpdx import ctl_to_mpdx
+from mpdx.convert.ctl_to_semantic import ctl_to_semantic
+from mpdx.convert.semantic_to_mpdx import semantic_to_mpdx
 
 def new() -> MpdxDocument:
     """
@@ -22,7 +24,9 @@ def from_html(source: Union[str, Path]) -> MpdxDocument:
     """
     html = read_html(source)
     ctl = parse_html_to_ctl(html)
-    return ctl_to_mpdx(ctl)
+    #ctl_to_mpdx(ctl)
+    semantic = ctl_to_semantic(ctl)
+    return semantic_to_mpdx(semantic)
 
 
 def load(source: Union[str, Path]) -> MpdxDocument:

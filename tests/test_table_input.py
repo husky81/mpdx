@@ -14,6 +14,7 @@ def test_03():
     mp.at("비목").writes("직접비", "간접비")
 
     mp.at("금액").writes(20, 10)
+    print(mp)
 
 def test_02():
     mp = mpdx.new()

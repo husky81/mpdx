@@ -38,11 +38,8 @@ def test_01(tmp_path):
 
 def test_simple_table_load2():
     path = Path("examples/3x3_table.html")
-
     mp = mpdx.load(path)
-
-    assert mp is not None
-
+    html_str = mp.to_html()
     print(mp)
 
 
