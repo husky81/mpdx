@@ -1,205 +1,100 @@
 # MPDX — Multi-Parent Document Exchange
 
-MPDX is a **semantic, graph-based document data model** for representing textual and tabular documents independently of visual layout.
+> **A report has one most concise, most beautiful form. What a person writes is the content;
+> the form belongs to the system.**
 
-Rather than encoding documents as trees or grid coordinates, MPDX models documents as **meaning-centered semantic graphs**, enabling the same document semantics to be rendered, queried, analyzed, and reused across multiple forms.
+MPDX stores a document's **content with its formatting removed**. Written as `md+mpdx` — Markdown
+for prose, MPDX for tables — a document can be **reproduced** from that file alone: the editor
+applies its forms and lays the tables out again. The tables may come back arranged differently
+(split, merged, transposed); what the document chose to emphasize may change. **The content does
+not.** Two documents with the same md+mpdx are the same document.
 
-This repository provides the **reference specification, examples, and minimal tooling** for MPDX.
+> 보고서에는 가장 간결하고 아름다운 하나의 형식이 있다. md+mpdx 는 문서의 서식을 제거한 채
+> 내용만 그대로 저장하고, 이것만으로 문서를 다시 재현할 수 있다. 표의 구성이나 표현은 달라질 수
+> 있지만 문서의 내용은 같다.
 
----
-
-## Motivation
-
-Most existing document formats—such as DOCX, HTML, and spreadsheets—encode documents as:
-
-- Tree-based structures (DOM, XML)
-- Row–column–oriented tables
-- Layout-driven representations
-
-While effective for rendering, these approaches make it difficult to:
-
-- Explicitly represent **semantic relationships** between document elements
-- Reuse document meaning across different layouts
-- Apply documents directly to automation, analysis, or LLM-based processing
-
-In particular, **tabular data is usually defined by coordinates**, not by meaning.  
-A cell is typically identified as “row × column,” even when its true meaning is a semantic combination (e.g., *planned amount* × *student labor*).
-
-MPDX addresses this limitation by modeling documents as **semantic graphs with multi-parent relationships**, where values are defined by **semantic intersections**, not fixed positions.
+**Latest specification: [`spec/mpdx-v2.1.md`](spec/mpdx-v2.1.md)** — home: https://gitoky.com/bckim/mpdx
 
 ---
 
-## Core Concepts
+## The idea in one table
 
-### 1. Semantic Graph Model
+A value is not "row 3, column 2". It is the value of something:
 
-- All document elements are represented as **nodes**
-- Nodes may have **multiple parents**, enabling semantic intersections
-- The model is not constrained to tree structures
+```
+1	0	tbl	Table 3 3
+2:4	1	t	Item|Planned|Used
+5	1	t	Labor
+6	1	t	Materials
+7:8	[5,3:]	t	20,000|18,000      ← Labor × Planned, Labor × Used
+9:10	[6,3:]	t	5,000|4,200
+```
 
-This allows document meaning to be expressed directly, rather than inferred from layout.
+Each node lists its parents. A value is the intersection of its parents' meanings, and parent
+order means nothing. Whether *Labor* becomes a row header and *Planned* a column header — or the
+other way round — is a rendering decision.
 
----
+## Stacks
 
-### 2. Minimal Node Types
+Several tables with the same labels and different values (a budget per institution) are written
+once, with the extra dimension as an axis:
 
-MPDX intentionally defines a small, extensible set of node types:
+```
+52	1	ax	구분
+53:55	52	t	주관|공동 A|공동 B
+200:203	[44,4:,53]	t	98,000|97,000||       ← row 44, columns 4…7, layer 53
+```
 
-| Type    | Description                                      |
-|---------|--------------------------------------------------|
-| `table` | Root node representing a document or table       |
-| `title` | Title of a document or table                     |
-| `t`     | Semantic text node (headers, labels, categories) |
-| `v`     | Value node representing a semantic intersection  |
+See [`examples/`](examples/): the same document as one stacked block (125 lines) and as three
+separate tables (249 lines).
 
----
+## md+mpdx
 
-### 3. Values as Semantic Intersections
+~~~markdown
+# 1. 사업 개요
 
-In MPDX, a value is not defined as “row × column,” but as the intersection of multiple semantic dimensions.
+본 사업은 …
 
-**Example:**
+□ 예산사용현황
 
-- Parent A: *Student Labor*
-- Parent B: *Planned Amount*
+```mpdx
+# MPDX v2.1 — 22행 10열, 헤더 1행
+# spec: https://gitoky.com/bckim/mpdx (spec/mpdx-v2.1.md)
+…
+```
+~~~
 
-→ The resulting value represents:  
-**“Planned amount of student labor”**
+Simple tables stay GitHub-flavored pipe tables; tables with merged cells become `mpdx` blocks.
+Every MPDX block names its version and points to its spec.
 
-This interpretation is independent of how the table is visually arranged.
+## Versions
 
----
+| Version | Date | Where |
+|---|---|---|
+| v0.1 | 2025-12 | github.com/husky81/mpdx — the model (semantic graph, multi-parent values) |
+| v2.0 | 2026-08 | CellDocs internal |
+| **v2.1** | 2026-10-04 | **https://gitoky.com/bckim/mpdx** — first public serialization |
 
-## MPDX Serialization
+From v2.1 on, MPDX is maintained at **https://gitoky.com/bckim/mpdx** only. The GitHub repository
+keeps this v2.1 snapshot and is not updated further.
 
-MPDX can be serialized using simple, human-readable, text-based formats.
+## Implementations
 
-This repository includes a **TSV-based reference serialization**:
+- **CellDocs** (celldocs.kr) — writes md+mpdx (`MPDX 내보내기`), reads and patches MPDX tables
+  through its MCP tools (`read_table`, `update_table_cells`, including stacks). Importing an
+  md+mpdx file back into a document (reproduction without the original, §4 of the spec) is in
+  progress.
+- **`src/`** — the v0.1 experimental Python tooling (HTML ↔ MPDX). It predates v2.1 and does not
+  read stacks or compaction.
 
-- Each row represents a node
-- Parent relationships are explicitly listed
-- Designed as an **intermediate representation**, not a final rendering format
-
-**Example:**
-
-```text
-id parents type text
-1 0 table
-2 1 title Simple Budget Example
-3 2 t Category
-4 2 t Item
-5 2 t Planned Amount
-10 3 t Direct Cost
-11 [10,4] t Student Labor
-12 [11,5] v 20000
-````
-
-The serialization format is only one possible representation.
-**MPDX as a model is not tied to any specific file format.**
-
----
-
-## Rendering Independence
-
-A key property of MPDX is the separation of **meaning** and **rendering**.
-
-The same MPDX data can be rendered as:
-
-- Hierarchical tables with merged cells
-- Fully flattened analytical tables
-- Pivoted or transposed views
-- Database-friendly representations
-
-All of these are different projections of the same underlying semantic model.
-
----
-
-## Use Cases
-
-- Document automation and transformation
-- Complex table modeling (budgets, reports, forms)
-- LLM-friendly document structuring
-- Semantic document analysis
-- Intermediate representation between authoring and rendering
-- Database-backed document systems
-
----
-
-## Project Status
-
-MPDX is currently in an **early, research-oriented stage**.
-
-- The core data model is stable enough for experimentation
-- Reference serialization and examples are provided
-- Tooling is intentionally minimal
-
-This repository is published to:
-
-- Establish the conceptual model
-- Enable discussion and early adoption
-- Support academic reference and extension
-
----
-
-## Related Publication
-
-This repository accompanies the research paper:
-
-***A Semantic Graph-Based Document Model for Tabular and Textual Data***
-**MPDX: A Multi-Parent Document Exchange Format**
-
-(Preprint / publication details will be added.)
-
----
-
-## Contributing
-
-MPDX is an open research and standardization-oriented project.
-Contributions, discussions, and experimental implementations are welcome.
-
-Suggested contribution areas include:
-
-- Alternative serializations
-- Rendering rules
-- Query models
-- Tooling and converters
-- Case studies and real-world applications
-
----
+```python
+import mpdx                          # v0.1 tooling
+mp = mpdx.from_html("a.html")
+for n in mp.find(type="t"):
+    print(n.text)
+html = mp.to_html()
+```
 
 ## License
 
-This project is released under the **MIT License**.
-
----
-
-## Contact
-
-For questions, discussion, or collaboration:
-
-- GitHub Issues
-- Pull Requests
-
----
-
-**MPDX is not a document format.**
-**It is a semantic document model.**
-
-# 사용 방법
-
-import mpdx
-
-mp = mpdx.from_html("a.html")
-
-# inspect
-
-for n in mp.find(type="t"):
-    print(n.text)
-
-# modify
-
-mp.find[type="t", text="20000"](0).text = "21000"
-
-# render back
-
-html = mp.to_html()
+MIT — see [`LICENSE`](LICENSE).
