@@ -13,7 +13,7 @@ not.** Two documents with the same md+mpdx are the same document.
 > 내용만 그대로 저장하고, 이것만으로 문서를 다시 재현할 수 있다. 표의 구성이나 표현은 달라질 수
 > 있지만 문서의 내용은 같다.
 
-**Latest specification: [`spec/mpdx-v2.1.md`](spec/mpdx-v2.1.md)** — home: https://gitoky.com/bckim/mpdx
+**Latest specification: [`spec/mpdx-v2.2.md`](spec/mpdx-v2.2.md)** — home: https://gitoky.com/bckim/mpdx
 
 ---
 
@@ -58,8 +58,8 @@ separate tables (249 lines).
 □ 예산사용현황
 
 ```mpdx
-# MPDX v2.1 — 22행 10열, 헤더 1행
-# spec: https://gitoky.com/bckim/mpdx (spec/mpdx-v2.1.md)
+# MPDX v2.2 — 22행 10열, 헤더 1행
+# spec: https://gitoky.com/bckim/mpdx (spec/mpdx-v2.2.md)
 …
 ```
 ~~~
@@ -73,7 +73,8 @@ Every MPDX block names its version and points to its spec.
 |---|---|---|
 | v0.1 | 2025-12 | github.com/husky81/mpdx — the model (semantic graph, multi-parent values) |
 | v2.0 | 2026-08 | CellDocs internal |
-| **v2.1** | 2026-10-04 | **https://gitoky.com/bckim/mpdx** — first public serialization |
+| v2.1 | 2026-10-04 | https://gitoky.com/bckim/mpdx — first public serialization |
+| **v2.2** | 2026-10-05 | **https://gitoky.com/bckim/mpdx** — md+mpdx is a static snapshot (displayed values only) |
 
 From v2.1 on, MPDX is maintained at **https://gitoky.com/bckim/mpdx** only. The GitHub repository
 keeps this v2.1 snapshot and is not updated further.
